@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!--For Crop Image-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/StyleSheet.css">
+    <!--For Icon-->
+    <link href="~/assets/css/css.css" rel="stylesheet" type="text/css" />
+    <style>
+        #upload-demo {
+            width: 250px;
+            height: 250px;
+            padding-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div id="___gatsby">
+        <div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper">
+            <div>
+                <div class="container" style="display:flex;justify-content:center;background:#3E163A">
+                    <div class="logo" style="display:flex;align-items:center;flex-direction:column;max-width:fit-content">
+                        <div style="font-weight:500;font-size:20px;color:#fff">
+                            MAKE YOUR POSTER
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pages__Container-sc-1flae6u-9 eSHHpD">
+                <div class="pages__C2-sc-1flae6u-7 VSFoJ">
+                    <div class="pages__C3-sc-1flae6u-6 hpHjrr">
+                        <div class="konvajs-content" role="presentation" style="position: relative; user-select: none; width: 500px; height: 500px;">
+                            <canvas id="myCanvas" width="1106" height="1106" style="padding: 0px; margin: 0px; border: 0px; background: transparent; position: absolute; top: 0px; left: 0px; width: 500px; height: 500px; display: block;"></canvas>
+                        </div>
+                    </div>
+                    <div class="pages__C3-sc-1flae6u-6 hpHjrr">
+                        <h1 class="pages__Container3-sc-1flae6u-3 earCAW">
+                            <div>
+                                <div style="background:#C07019" class="Upload__Container1-sc-1lmv8gl-0 eKNSaz">
+                                    <h1 style="font-weight:500;color:#fff" class="Upload__Heading1-sc-1lmv8gl-2 fmtkYn">
+                                        Upload Profile Pic
+                                    </h1>
+                                    <div class="Upload__Section1-sc-1lmv8gl-1 iKcpiW">
+                                        <div style="color:#fff;font-size:13px;line-height:18px" class="Upload__Description-sc-1lmv8gl-3 haAgSI">
+                                            Click on the upload icon to upload profile pic. You can repeat this step to choose another profile pic.
+                                        </div>
+                                        <div>
+                                            <span class="Upload__ButtonContainer-sc-1lmv8gl-4 koFGgQ">
+                                                <button id="btn" class="Upload__Button-sc-1lmv8gl-5 bTShrr">
+                                                    <label for="contained-button-file">
+                                                        <i class="uil-upload" style="font-size: 35px;cursor:pointer;"></i>
+                                                    </label>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background:#C07019" class="InputText__Container2-sc-kmji29-0 zUzXM">
+                                    <div class="InputText__Section1-sc-kmji29-2 gFlUcK">
+                                        <h1 class="InputText__Heading1-sc-kmji29-1 tmgdJ">Your Name</h1>
+                                        <label for="material-switch"></label>
+                                    </div>
+                                    <div class="InputText__Section2-sc-kmji29-3 ePhaEX">
+                                        <input id="nameInput" type="text" name="username" maxlength="16" placeholder="Your Name" class="InputText__FormFillup-sc-kmji29-5 eciXpP" />
+                                    </div>
+                                </div>
+                            </div>
+                        </h1>
+                        <div class="Download__Container-sc-1ppbm4s-0 ifLmIl">
+                            <div class="Download__DownloadContainer-sc-1ppbm4s-1 hVLGbo">
+                                <button id="dwnbtn" style="background-color:#3F173B;color:#fff;font-weight:500;cursor:pointer;font-size:20px" class="Download__Button-sc-1ppbm4s-2 laNvqH">DOWNLOAD</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="footerLine">
+                    <a href="https://www.ashvillp.com/" target="_blank" style="text-decoration:none">
+                        <div style="margin:10px 0 10px 0px">
+                            <img src="~/static/Ashvilogo.png" width="80px" />
+                        </div>
+                    </a>
+                    <div style="color:#000;margin:10px 0 10px 0px;text-align:center">2022 © All rights reserved.Ashvi Consultancy Service Pvt Ltd   </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true">
+        </div>
+
+        <div class="modal fade bs-example-modal-center" id="cropImagePop" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center align-items-center">
+                        <div id="upload-demo" class="center-block"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script> <!-- Include Croppie library -->
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var canvas = document.getElementById('myCanvas');
+            var context = canvas.getContext('2d');
+            var uploadedImage;
+            var name;
+            var img;
+            var $uploadCrop,
+                tempFilename,
+                rawImg,
+                imageId;
+
+            window.addEventListener('load', function () {
+                img = new Image();
+                img.onload = function () {
+                    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    context.save();
+                };
+                img.src = '/static/CharkhoGreen.png';
+                $('#cropImagePop').modal('hide');
+            });
+
+            function drawOverlay() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw the uploaded image if available
+                if (uploadedImage) {
+                    var imageSize = Math.min(canvas.width, canvas.height) * 0.38;
+                    var x = 158;
+                    var y = 340;
+                    var newHeight = imageSize * 1;
+                    var borderRadius = 0;
+
+                    context.save();
+                    context.beginPath();
+                    context.moveTo(x + borderRadius, y);
+                    context.lineTo(x + imageSize - borderRadius, y);
+                    context.arcTo(x + imageSize, y, x + imageSize, y + borderRadius, borderRadius);
+                    context.lineTo(x + imageSize, y + newHeight - borderRadius);
+                    context.arcTo(x + imageSize, y + newHeight, x + imageSize - borderRadius, y + newHeight, borderRadius);
+                    context.lineTo(x + borderRadius, y + newHeight);
+                    context.arcTo(x, y + newHeight, x, y + newHeight - borderRadius, borderRadius);
+                    context.lineTo(x, y + borderRadius);
+                    context.arcTo(x, y, x + borderRadius, y, borderRadius);
+                    context.closePath();
+                    context.clip();
+
+                    context.drawImage(uploadedImage, 0, 0, uploadedImage.width, uploadedImage.height, x, y, imageSize, newHeight);
+                    context.restore();
+                }
+
+               
+                context.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+             
+                if (name) {
+                    context.fillStyle = 'White';
+                    context.font = '55px Arial bold';
+                    context.textAlign = 'center';
+                    context.fillText(name, 342, 768);
+                }
+            }
+
+
+
+            document.getElementById('btn').addEventListener('click', function () {
+                var input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+
+                input.addEventListener('change', function (event) {
+                    var file = event.target.files[0];
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.upload-demo').addClass('ready');
+                        $('#cropImagePop').modal('show');
+                        rawImg = e.target.result;
+                    };
+                    if (file) {
+                        reader.readAsDataURL(file);
+                    }
+                });
+                input.click();
+            });
+
+
+            var nameInput = document.getElementById('nameInput');
+            nameInput.addEventListener('input', function () {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                name = nameInput.value;
+                drawOverlay();
+            });
+
+            document.getElementById('dwnbtn').addEventListener('click', function () {
+                var canvas = document.getElementById('myCanvas');
+                var dataURL = canvas.toDataURL();
+                var link = document.createElement('a');
+
+                var fileName = nameInput.value.trim() || 'your_image';
+                link.download = fileName + '.png';
+                link.href = dataURL;
+                link.click();
+                window.location.reload();
+            });
+
+            var $uploadCrop = $('#upload-demo').croppie({
+                viewport: {
+                    width: 180,
+                    height: 180,
+                    type: 'circle'
+                },
+                enforceBoundary: true,
+                enableExif: true
+            });
+
+            $('#cropImagePop').on('shown.bs.modal', function () {
+                $uploadCrop.croppie('bind', {
+                    url: rawImg
+                }).then(function () {
+                    console.log('jQuery bind complete');
+                });
+            });
+
+            $('#cropImageBtn').on('click', function () {
+                $uploadCrop.croppie('result', {
+                    type: 'canvas',
+                    size: {
+                        width: 500,
+                        height: 500,
+                    }
+                }).then(function (resp) {
+                    uploadedImage = new Image();
+                    uploadedImage.onload = function () {
+                        drawOverlay();
+                    };
+                    uploadedImage.src = resp;
+                    $('#cropImagePop').modal('hide');
+                });
+            });
+
+            $('#cropImageBtn').on('click', function (ev) {
+                $uploadCrop.croppie('result', {
+                    type: 'base64',
+                    format: 'jpeg',
+                    size: { width: 150, height: 200 }
+                }).then(function (resp) {
+                    $('#cropImagePop').modal('hide');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
