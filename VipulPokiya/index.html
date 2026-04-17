@@ -121,7 +121,7 @@
             </div>
         </div>
     </div>
-
+    <input type="file" id="fileInput" accept="image/*" style="display:none;">
     <!-- Scripts -->
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
@@ -182,29 +182,47 @@
                 boundary: { width: 250, height: 250 },
                 enableExif: true
             });
-
-            // Upload button
             document.getElementById('btn').addEventListener('click', function () {
-                var input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
+                document.getElementById('fileInput').click();
+            });
+            
+            document.getElementById('fileInput').addEventListener('change', function (e) {
 
-                input.onchange = function (e) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (event) {
-                        rawImg = event.target.result;
-
-                        setTimeout(() => {
-                            var modal = new bootstrap.Modal(document.getElementById('cropImagePop'));
-                            modal.show();
-                        }, 200);
-                    };
-
-                    reader.readAsDataURL(e.target.files[0]);
+                if (!e.target.files || !e.target.files[0]) return;
+            
+                var file = e.target.files[0];
+            
+                if (!file.type.startsWith('image/')) {
+                    alert("Please select an image file");
+                    return;
+                }
+            
+                var reader = new FileReader();
+            
+                reader.onload = function (event) {
+            
+                    rawImg = event.target.result;
+            
+                    // Destroy old croppie
+                    if ($uploadCrop) {
+                        $uploadCrop.croppie('destroy');
+                    }
+            
+                    // Recreate croppie
+                    $uploadCrop = $('#upload-demo').croppie({
+                        viewport: { width: 200, height: 200, type: 'circle' },
+                        boundary: { width: 250, height: 250 },
+                        enableExif: true
+                    });
+            
+                    var modal = new bootstrap.Modal(document.getElementById('cropImagePop'));
+                    modal.show();
                 };
-
-                input.click();
+            
+                reader.readAsDataURL(file);
+            
+                // reset input (VERY IMPORTANT)
+                this.value = "";
             });
 
             // Bind image when modal opens
