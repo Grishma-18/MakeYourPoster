@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>GUJRAT TITANS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- SEO Meta -->
+    <meta name="description" content="Create your custom poster with photo and name instantly.">
+    <meta name="author" content="GM Invitation">
+    <meta name="keywords" content="poster maker, digital poster, photo poster, custom poster">
+
+    <!-- Open Graph (for WhatsApp / Facebook share) -->
+    <meta property="og:title" content="Make Your Poster - GT">
+    <meta property="og:description" content="Create and download your personalized poster instantly">
+    <meta property="og:image" content="https://gm-invitation.github.io/MakeYourPoster/GT/static/GT.png">
+    <meta property="og:type" content="website">
+
+    <!-- Croppie -->
+    <link rel="stylesheet" href="../css/croppie.min.css" />
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="../favicon.ico">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #f3f4f6;
+        }
+
+        .header {
+            background: #3E163A;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            font-size: 20px;
+        }
+
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        canvas {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .controls {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .btn-custom {
+            width: 100%;
+            background: #3F173B;
+            color: #fff;
+        }
+
+        @media(max-width:600px) {
+            .main {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">MAKE YOUR POSTER - GT</div>
+
+    <div class="main">
+
+        <canvas id="myCanvas" width="1086" height="1448"></canvas>
+
+        <div class="controls">
+            <div class="card shadow">
+                <h5>Upload Photo</h5>
+                <button id="btn" class="btn btn-custom mb-3">Choose Image</button>
+
+                <h5>Your Name</h5>
+                <input id="nameInput" class="form-control mb-3" placeholder="Enter your name">
+
+                <button id="dwnbtn" class="btn btn-custom">Download</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Crop Modal -->
+    <div class="modal fade" id="cropImagePop" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="upload-demo"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cropImageBtn" class="btn btn-primary">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+    <!-- Scripts -->
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/croppie.min.js"></script>
+
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+
+            var canvas = document.getElementById('myCanvas');
+            var ctx = canvas.getContext('2d');
+
+            var uploadedImage = null;
+            var name = "";
+            var templateImg = new Image();
+            var rawImg = null;
+
+            // Load template
+            templateImg.onload = draw;
+            templateImg.src = 'static/GT.png';
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (uploadedImage) {
+                    var x = 322;
+                    var y = 576;
+                    var size = 440; // +4 adjust
+
+                    ctx.save();
+
+                    // Make circle
+                    ctx.beginPath();
+                    ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.clip();
+
+                    // Draw image inside circle
+                    ctx.drawImage(uploadedImage, x, y, size, size);
+
+                    ctx.restore();
+
+                }
+
+                ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
+
+                if (name) {
+                    ctx.fillStyle = "#fff";
+                    ctx.font = "900 37px 'Poppins'";
+                    ctx.textAlign = "center";
+                    ctx.fillText(name, 288, 907);
+                }
+            }
+
+            // Croppie init
+            var $uploadCrop = $('#upload-demo').croppie({
+                viewport: { width: 200, height: 200, type: 'circle' },
+                boundary: { width: 250, height: 250 },
+                enableExif: true
+            });
+            document.getElementById('btn').addEventListener('click', function () {
+                document.getElementById('fileInput').click();
+            });
+            
+            document.getElementById('fileInput').addEventListener('change', function (e) {
+
+                if (!e.target.files || !e.target.files[0]) return;
+            
+                var file = e.target.files[0];
+            
+                if (!file.type.startsWith('image/')) {
+                    alert("Please select an image file");
+                    return;
+                }
+            
+                var reader = new FileReader();
+            
+                reader.onload = function (event) {
+            
+                    rawImg = event.target.result;
+            
+                    // Destroy old croppie
+                    if ($uploadCrop) {
+                        $uploadCrop.croppie('destroy');
+                    }
+            
+                    // Recreate croppie
+                    $uploadCrop = $('#upload-demo').croppie({
+                        viewport: { width: 200, height: 200, type: 'circle' },
+                        boundary: { width: 250, height: 250 },
+                        enableExif: true
+                    });
+            
+                    var modal = new bootstrap.Modal(document.getElementById('cropImagePop'));
+                    modal.show();
+                };
+            
+                reader.readAsDataURL(file);
+            
+                // reset input (VERY IMPORTANT)
+                this.value = "";
+            });
+
+            // Bind image when modal opens
+            $('#cropImagePop').on('shown.bs.modal', function () {
+                if (rawImg) {
+                    $uploadCrop.croppie('bind', {
+                        url: rawImg
+                    });
+                }
+            });
+
+            // Crop button
+            $('#cropImageBtn').on('click', function () {
+                $uploadCrop.croppie('result', {
+                    type: 'base64',
+                    size: { width: 400, height: 400 }
+                }).then(function (resp) {
+                    uploadedImage = new Image();
+                    uploadedImage.onload = draw;
+                    uploadedImage.src = resp;
+
+                    var modalEl = document.getElementById('cropImagePop');
+                    var modal = bootstrap.Modal.getInstance(modalEl);
+                    modal.hide();
+                });
+            });
+
+            // Name input
+            document.getElementById('nameInput').addEventListener('input', function () {
+
+                // LIMIT 17 characters + convert to uppercase
+                this.value = this.value.slice(0, 17).toUpperCase();
+
+                name = this.value;
+                draw();
+            });
+
+            // Download
+            document.getElementById('dwnbtn').addEventListener('click', function () {
+                var link = document.createElement('a');
+                link.download = (name || 'i_support_GT') + '.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+
+        });
+    </script>
+<footer style="text-align:center; padding:15px; background:#3E163A; color:#fff; margin-top:20px;">
+    All rights reserved © GMInvitation <br>
+    Instagram: <a href="https://instagram.com/g.m_invitation" target="_blank" style="color:#fff;">@g.m_invitation</a>
+</footer>
+</body>
+</html>
